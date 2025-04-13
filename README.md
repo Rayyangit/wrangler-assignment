@@ -198,6 +198,84 @@ CDAP IRC Channel: [#cdap on irc.freenode.net](http://webchat.freenode.net?channe
 CDAP Users on Slack: [cdap-users team](https://cdap-users.herokuapp.com)
 
 
+Wrangler Assignment - Directive Enhancement
+
+Student: Rayyan Mulla
+Date: 13-04-2025
+
+---
+
+## Overview
+
+This assignment focuses on enhancing the CDAP Wrangler core library by implementing a custom directive called `AggregateStats`, which is capable of parsing and aggregating:
+
+- Byte size units: KB, MB, GB
+- Time duration units: ms, s, m
+
+---
+
+## Work Completed
+
+✅ **Grammar Modification**  
+- `Directives.g4` updated with new token rules for ByteSize and TimeDuration
+
+✅ **New Directive Implemented**  
+- `AggregateStats.java` added in `wrangler-core`  
+- Supports identifying and parsing byte/time strings like "10KB", "200ms"
+
+✅ **Core Integration**  
+- Updated `RecipeVisitor.java` and `GrammarWalker` to support new tokens  
+- Integrated with `ExecutorContext` for temporary variable management
+
+✅ **Unit Tests Created**  
+- `AggregateStatsTest.java` created with multiple test cases for byte and time parsing and aggregation logic  
+
+❌ **Unit Tests Passed: Partial**  
+- Tests for other directives and standard functionality passed  
+- `AggregateStatsTest` **did not pass** due to unresolved parsing/logic issues  
+  - Likely cause: mismatch in expected data type or visitor method logic  
+  - Time constraints prevented full resolution, but core logic and structure were implemented
+
+✅ **AI Usage**  
+- AI tooling (ChatGPT) was used for grammar rule guidance, Java parsing logic, test design, and Maven troubleshooting  
+- See `prompts.txt` for the complete log of prompts used
+
+✅ **Build & Test Summary**  
+- Build: ✅ `mvn clean install -DskipTests=false` completes successfully  
+- Tests: ✅ General unit tests pass, ❌ `AggregateStatsTest` fails
+
+---
+
+## Submission Artifacts
+
+- Source Files: Modified `.g4` and `.java` files in `wrangler-api` and `wrangler-core`
+- Test Files: All unit tests in `wrangler-core/src/test/...`
+- prompts.txt: AI prompt history
+- Screenshots/Logs: Evidence of compilation, partial test success, and failure report
+
+---
+
+## Known Issues
+
+- `AggregateStats` directive does not yet pass all unit tests
+- Parsing logic for byte/time strings may need fine-tuning in the visitor or directive logic
+- Needs further debugging and validation
+
+---
+
+## GitHub Repo
+
+ 
+https://github.com/Rayyangit/wrangler-assignment
+
+---
+
+Feel free to reach out for any clarifications.
+
+Thanks,  
+Rayyan Mulla
+
+
 ## License and Trademarks
 
 Copyright © 2016-2019 Cask Data, Inc.
