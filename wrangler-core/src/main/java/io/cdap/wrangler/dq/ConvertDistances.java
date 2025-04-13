@@ -17,7 +17,6 @@
 package io.cdap.wrangler.dq;
 
 import java.math.BigDecimal;
-import javax.annotation.Nullable;
 
 /**
  * Class for converting distances from one to another.
@@ -103,12 +102,11 @@ public final class ConvertDistances {
     this(Distance.MILE, Distance.KILOMETER);
   }
 
-  @Nullable
   public ConvertDistances(Distance from, Distance to) {
     this.from = (from == null ? Distance.MILE : from);
     this.to = (to == null ? Distance.KILOMETER : to);
     this.multiplier = new BigDecimal(String.valueOf(this.from.getToBase()))
-      .multiply(new BigDecimal(String.valueOf(this.to.getFromBase())));
+        .multiply(new BigDecimal(String.valueOf(this.to.getFromBase())));
   }
 
   /**

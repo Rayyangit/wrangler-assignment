@@ -64,6 +64,8 @@ directive
     | stringList
     | numberRanges
     | properties
+    | ByteSize
+    | TimeDuration
   )*?
   ;
 
@@ -140,7 +142,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | byteSizeValue | timeDurationValue
  ;
 
 ecommand
@@ -247,6 +249,16 @@ BackSlash: '\\';
 Dollar   : '$';
 Tilde    : '~';
 
+byteSizeValue: ByteSize;
+timeDurationValue: TimeDuration;
+
+// Fragments for units (add with other fragments)
+fragment BYTE_UNIT: ('B'|'KB'|'MB'|'GB'|'TB'|'PB'|'KIB'|'MIB'|'GIB'|'TIB'|'PIB');
+fragment TIME_UNIT: ('NS'|'US'|'MS'|'S'|'M'|'H'|'D');
+
+// Token definitions (add with other tokens)
+ByteSize: Number (' ')* BYTE_UNIT;
+TimeDuration: Number (' ')* TIME_UNIT;
 
 Bool
  : 'true'

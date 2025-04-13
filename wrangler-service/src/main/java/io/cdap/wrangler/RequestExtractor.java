@@ -16,9 +16,16 @@
 
 package io.cdap.wrangler;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+import javax.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+
 import io.cdap.cdap.api.service.http.HttpServiceRequest;
 import io.cdap.wrangler.dataset.workspace.RequestDeserializer;
 import io.cdap.wrangler.proto.BadRequestException;
@@ -26,19 +33,15 @@ import io.cdap.wrangler.proto.Request;
 import io.cdap.wrangler.proto.connection.ConnectionMeta;
 import io.cdap.wrangler.proto.connection.ConnectionType;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import javax.annotation.Nullable;
-
 /**
- * This class {@link RequestExtractor} provides utility functions for extracting different aspects of the request.
+ * This class {@link RequestExtractor} provides utility functions for extracting
+ * different aspects of the request.
  * It provides functionality to extract headers and content.
  */
 public final class RequestExtractor {
   private static final Gson GSON = new GsonBuilder()
-    .registerTypeAdapter(Request.class, new RequestDeserializer())
-    .create();
+      .registerTypeAdapter(Request.class, new RequestDeserializer())
+      .create();
   private final HttpServiceRequest request;
   public static final String CONTENT_TYPE_HEADER = PropertyIds.CONTENT_TYPE;
   public static final String CHARSET_HEADER = PropertyIds.CHARSET;
@@ -47,11 +50,11 @@ public final class RequestExtractor {
     this.request = request;
   }
 
-
   /**
-   * Extracts the HTTP header, if the header is not present, then default value is returned.
+   * Extracts the HTTP header, if the header is not present, then default value is
+   * returned.
    *
-   * @param name of the HTTP header to be extracted.
+   * @param name         of the HTTP header to be extracted.
    * @param defaultValue value to returned if header doesn't exist.
    * @return value defined for the header.
    */
@@ -98,7 +101,8 @@ public final class RequestExtractor {
    * Get a ConnectionMeta object from the request body.
    *
    * @return the connection meta object
-   * @throws IllegalArgumentException if the body is empty or not a valid ConnectionMeta
+   * @throws IllegalArgumentException if the body is empty or not a valid
+   *                                  ConnectionMeta
    */
   public ConnectionMeta getConnectionMeta() {
     String bodyStr = getContent(StandardCharsets.UTF_8);
@@ -119,23 +123,25 @@ public final class RequestExtractor {
    * Get a ConnectionMeta object from the request body.
    *
    * @return the connection meta object
-   * @throws IllegalArgumentException if the body is empty or not a valid ConnectionMeta
+   * @throws IllegalArgumentException if the body is empty or not a valid
+   *                                  ConnectionMeta
    */
   public ConnectionMeta getConnectionMeta(ConnectionType expectedType) {
     ConnectionMeta meta = getConnectionMeta();
     if (expectedType != meta.getType()) {
       throw new BadRequestException(String.format("Expected connection of type '%s' but found '%s'.",
-                                                  expectedType, meta.getType()));
+          expectedType, meta.getType()));
     }
     return meta;
   }
 
   /**
    * Returns the content transformed into a Class defined.
-   * It first transforms from the charset into unicode and then applies the transformation.
+   * It first transforms from the charset into unicode and then applies the
+   * transformation.
    *
    * @param charset source charset of the content.
-   * @param type class to converted to.
+   * @param type    class to converted to.
    * @return instance of type T as defined by the class.
    */
   @Nullable

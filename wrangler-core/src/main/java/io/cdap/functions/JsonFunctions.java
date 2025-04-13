@@ -16,6 +16,10 @@
 
 package io.cdap.functions;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -32,11 +36,6 @@ import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import javax.annotation.Nullable;
-
 /**
  * Collection of useful expression functions made available in the context
  * of an expression.
@@ -45,11 +44,11 @@ import javax.annotation.Nullable;
  */
 public final class JsonFunctions {
   public static final Configuration GSON_CONFIGURATION = Configuration
-    .builder()
-    .mappingProvider(new GsonMappingProvider())
-    .jsonProvider(new GsonJsonProvider())
-    .options(Option.SUPPRESS_EXCEPTIONS)
-    .build();
+      .builder()
+      .mappingProvider(new GsonMappingProvider())
+      .jsonProvider(new GsonJsonProvider())
+      .options(Option.SUPPRESS_EXCEPTIONS)
+      .build();
 
   private static final JsonParser PARSER = new JsonParser();
   private static final Gson GSON = new GsonBuilder().serializeNulls().create();
@@ -58,24 +57,24 @@ public final class JsonFunctions {
   }
 
   @Deprecated
-  public static JsonElement select(String json, String path, String ...paths) {
+  public static JsonElement select(String json, String path, String... paths) {
     JsonElement element = PARSER.parse(json);
     return select(element, path, paths);
   }
 
   @Deprecated
-  public static JsonElement select(String json, boolean toLower, String path, String ...paths) {
+  public static JsonElement select(String json, boolean toLower, String path, String... paths) {
     JsonElement element = PARSER.parse(json);
     return select(element, toLower, path, paths);
   }
 
   @Deprecated
-  public static JsonElement select(JsonElement element, String path, String ...paths) {
+  public static JsonElement select(JsonElement element, String path, String... paths) {
     return select(element, true, path, paths);
   }
 
   @Deprecated
-  public static JsonElement select(JsonElement element, boolean toLower, String path, String ...paths) {
+  public static JsonElement select(JsonElement element, boolean toLower, String path, String... paths) {
     if (toLower) {
       element = keysToLower(element);
     }
@@ -93,7 +92,7 @@ public final class JsonFunctions {
   }
 
   @Deprecated
-  public static JsonElement drop(String json, String field, String ... fields) {
+  public static JsonElement drop(String json, String field, String... fields) {
     JsonElement element = PARSER.parse(json);
     return drop(element, field, fields);
   }
@@ -101,17 +100,18 @@ public final class JsonFunctions {
   /**
    * Removes fields from a JSON inline.
    *
-   * This method recursively iterates through the Json to delete one or more fields specified.
+   * This method recursively iterates through the Json to delete one or more
+   * fields specified.
    * It requires the Json to be parsed.
    *
    * @param element Json element to be parsed.
-   * @param field first field to be deleted.
-   * @param fields list of fields to be deleted.
+   * @param field   first field to be deleted.
+   * @param fields  list of fields to be deleted.
    * @return
    */
   @Deprecated
-  public static JsonElement drop(JsonElement element, String field, String ... fields) {
-    if(element.isJsonObject()) {
+  public static JsonElement drop(JsonElement element, String field, String... fields) {
+    if (element.isJsonObject()) {
       JsonObject object = element.getAsJsonObject();
       Set<Map.Entry<String, JsonElement>> entries = object.entrySet();
       Iterator<Map.Entry<String, JsonElement>> iterator = entries.iterator();
@@ -136,7 +136,8 @@ public final class JsonFunctions {
   }
 
   /**
-   * This function lowers the keys of the json. it applies this transformation recurively.
+   * This function lowers the keys of the json. it applies this transformation
+   * recurively.
    *
    * @param element to be transformed.
    * @return modified element.
@@ -200,7 +201,8 @@ public final class JsonFunctions {
   }
 
   /**
-   * Parses a column or string to JSON. This is equivalent to <code>JSON.parse()</code>
+   * Parses a column or string to JSON. This is equivalent to
+   * <code>JSON.parse()</code>
    * This function by default lowercases the keys.
    *
    * @param json string representation of json.
@@ -212,9 +214,10 @@ public final class JsonFunctions {
   }
 
   /**
-   * Parses a column or string to JSON. This is equivalent to <code>JSON.parse()</code>
+   * Parses a column or string to JSON. This is equivalent to
+   * <code>JSON.parse()</code>
    *
-   * @param json string representation of json.
+   * @param json    string representation of json.
    * @param toLower true to lower case keys, false to leave it as-is.
    * @return parsed json else throws an exception.
    */
@@ -228,7 +231,8 @@ public final class JsonFunctions {
   }
 
   /**
-   * Parses a column or string to JSON. If the json string is invalid, this method will return a JsonNull
+   * Parses a column or string to JSON. If the json string is invalid, this method
+   * will return a JsonNull
    *
    * @param json string representation of json.
    * @return parsed json
@@ -291,8 +295,8 @@ public final class JsonFunctions {
    * Selects part of JSON using JSON DSL specified as json path.
    *
    * @param element json to be inspected.
-   * @param path to be searched for in the element.
-   * @param paths other paths.
+   * @param path    to be searched for in the element.
+   * @param paths   other paths.
    * @return A json array containing the results of all json paths.
    */
   public static JsonElement Select(JsonElement element, String path, String... paths) {
@@ -324,7 +328,7 @@ public final class JsonFunctions {
   /**
    * @return Number of elements in the array.
    */
-  @Nullable
+
   public static int ArrayLength(JsonArray array) {
     if (array != null) {
       return array.size();
@@ -332,4 +336,3 @@ public final class JsonFunctions {
     return 0;
   }
 }
-
